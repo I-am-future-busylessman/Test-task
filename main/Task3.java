@@ -72,6 +72,11 @@ public class Task3 {
         return !(sumOfArray(nums) % amount != 0 || nums.length < amount);
     }
 
+    public boolean stillAbleToBalance(List<ArrayList<Integer>> groups, int requiredSum) {
+        ArrayList<Integer> biggest = groups.get(findBiggest(groups));
+        return findNearestNum(biggest, requiredSum) != 0;
+    }
+
     public void divideInGroups(int[] nums, int amount) {
         Arrays.sort(nums);
         if (!isAbleToBalance(nums, amount)) {
@@ -86,13 +91,18 @@ public class Task3 {
                 groups.get(i % amount).add(nums[i]);
             }
             List<ArrayList<Integer>> result = findBalanced(groups, requiredSum);
-            while (groups.size() > 0) {
+            while (groups.size() > 0 && stillAbleToBalance(groups, requiredSum)) {
                 balance(groups, requiredSum);
                 result.addAll(findBalanced(groups, requiredSum));
             }
-            System.out.println("В результате разделения получились следующие группы:");
-            for (ArrayList<Integer> list: result) {
-                System.out.println(list.toString());
+            if (groups.size() > 0) {
+                System.out.println("Невозможно разделить на указанное количество групп");
+
+            }else {
+                System.out.println("В результате разделения получились следующие группы:");
+                for (ArrayList<Integer> list : result) {
+                    System.out.println(list.toString());
+                }
             }
         }
     }
